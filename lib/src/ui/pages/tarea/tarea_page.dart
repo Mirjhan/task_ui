@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasks/src/core/config.dart';
 import 'package:tasks/src/ui/core/colors.dart';
 import 'package:tasks/src/ui/pages/tarea/tarea_controller.dart';
 import 'package:tasks/src/ui/widget/app_bar_widget.dart';
@@ -21,9 +22,10 @@ class TareaPage extends StatelessWidget {
               separatorBuilder: (context, index) => Divider(),
               itemCount: controller.tareas.length,
               itemBuilder: (context, index) => itemListTile(
-                  controller.tareas[index].nombre,
-                  controller.tareas[index].descripcion,
-                  index)),
+                  image: controller.tareas[index].imagen,
+                  title: controller.tareas[index].nombre,
+                  subtitle: controller.tareas[index].descripcion,
+                  posicion: index)),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: controller.goToAddTareaPage,
@@ -33,11 +35,18 @@ class TareaPage extends StatelessWidget {
     );
   }
 
-  Widget itemListTile(String title, String subtitle, int posicion) {
+  Widget itemListTile({
+    required String title,
+    required String subtitle,
+    required int posicion,
+    String? image,
+  }) {
     return Container(
       padding: EdgeInsets.all(15),
       child: ListTile(
-          leading: CircleAvatar(),
+          leading: CircleAvatar(
+            backgroundImage: _pickImage(image),
+          ),
           title: Text(
             title,
             style: TextStyle(
@@ -62,5 +71,11 @@ class TareaPage extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  ImageProvider _pickImage(String? image) {
+    return (image != null)
+        ? NetworkImage('$urlServer/tarea/$image')
+        : AssetImage('assets/images/notfound.png');
   }
 }

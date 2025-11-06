@@ -67,6 +67,7 @@ class AppHttpManager {
 
   Future<AppResponse> sendFile({
     required String path,
+    required String fieldNameOfFile,
     required String pathFile,
     Map<String, String>? headers,
     Map<String, String>? fields,
@@ -76,14 +77,11 @@ class AppHttpManager {
     http.MultipartRequest request =
         http.MultipartRequest("POST", Uri.parse('$urlServer$path'));
 
-    fields?.forEach(
-      (key, value) => request.fields[key] = value,
-    );
-
-    //fileds: {nombre: 'mi nombre', 'descripcion': 'prueba' }
+    fields?.forEach((key, value) => request.fields[key] = value);
 
     http.MultipartFile file =
-        await http.MultipartFile.fromPath('image', pathFile);
+        await http.MultipartFile.fromPath(fieldNameOfFile, pathFile);
+
     request.files.add(file);
 
     http.StreamedResponse res = await request.send();

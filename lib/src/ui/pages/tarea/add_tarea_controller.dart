@@ -7,7 +7,6 @@ import 'package:tasks/src/models/tarea_model.dart';
 import 'package:tasks/src/services/app_http_manager.dart';
 import 'package:tasks/src/services/app_response.dart';
 import 'package:tasks/src/ui/widget/loading_service.dart';
-import 'package:http/http.dart' as http;
 
 class AddTareaController extends GetxController {
   TareaModel? tareaSeleccionada;
@@ -117,11 +116,18 @@ class AddTareaController extends GetxController {
 
   void sendToServer() async {
     AppHttpManager appHttpManager = AppHttpManager();
-    final AppResponse response = await appHttpManager
-        .sendFile(path: '/tarea/createAll', pathFile: pathSelected!, fields: {
+
+    Map<String, String> body = {
       'nombre': nombre,
       'descripcion': descripcion,
-    });
+    };
+
+    AppResponse response = await appHttpManager.sendFile(
+      path: '/tarea/createAll',
+      fieldNameOfFile: 'image',
+      pathFile: pathSelected!,
+      fields: body,
+    );
     if (response.isSuccess) {
     } else {}
     /* http.MultipartRequest request = http.MultipartRequest(
