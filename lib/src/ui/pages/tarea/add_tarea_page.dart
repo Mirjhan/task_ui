@@ -17,7 +17,9 @@ class AddTareaPage extends StatelessWidget {
     return GetBuilder<AddTareaController>(
       init: controller,
       builder: (controller) => Scaffold(
-          appBar: appBarWidget(titulo: 'Crear nueva tarea'),
+          appBar: appBarWidget(
+              titulo:
+                  controller.editando ? 'Editar Tarea' : 'Crear nueva tarea'),
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),

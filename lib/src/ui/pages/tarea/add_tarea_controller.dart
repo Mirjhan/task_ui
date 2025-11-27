@@ -6,6 +6,7 @@ import 'package:tasks/src/data/requests/tarea_request.dart';
 import 'package:tasks/src/models/tarea_model.dart';
 import 'package:tasks/src/services/app_http_manager.dart';
 import 'package:tasks/src/services/app_response.dart';
+import 'package:tasks/src/services/method_enum.dart';
 import 'package:tasks/src/ui/widget/loading_service.dart';
 
 class AddTareaController extends GetxController {
@@ -82,7 +83,7 @@ class AddTareaController extends GetxController {
         descripcion: descripcion,
       );
       AppResponse response = await appHttpManager.put(
-        path: '/tareas/update',
+        path: '/tarea/update',
         body: tareaRequest.toJson(),
       );
       hideLoading();
@@ -123,6 +124,7 @@ class AddTareaController extends GetxController {
     };
 
     AppResponse response = await appHttpManager.sendFile(
+      method: MethodEnum.post,
       path: '/tarea/createAll',
       fieldNameOfFile: 'image',
       pathFile: pathSelected!,

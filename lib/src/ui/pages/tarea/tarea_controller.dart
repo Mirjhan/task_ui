@@ -70,7 +70,7 @@ class TareaController extends GetxController {
     showLoading();
     TareaModel selected = tareas[posicion];
     AppResponse response =
-        await appHttpManager.delete(path: '/tareas/delete/${selected.id}');
+        await appHttpManager.delete(path: '/tarea/delete/${selected.id}');
     hideLoading();
     if (response.isSuccess) {
       tareas.removeAt(posicion);

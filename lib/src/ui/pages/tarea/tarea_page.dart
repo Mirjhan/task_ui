@@ -7,7 +7,6 @@ import 'package:tasks/src/ui/widget/app_bar_widget.dart';
 
 class TareaPage extends StatelessWidget {
   final TareaController controller = TareaController();
-
   TareaPage({super.key});
 
   @override

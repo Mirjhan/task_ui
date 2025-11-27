@@ -16,6 +16,7 @@ class UsuarioModel {
   String apellido;
   String correo;
   String contrasena;
+  String? avatar;
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
@@ -26,6 +27,7 @@ class UsuarioModel {
     required this.apellido,
     required this.correo,
     required this.contrasena,
+    this.avatar,
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
@@ -37,6 +39,7 @@ class UsuarioModel {
         apellido: json["apellido"],
         correo: json["correo"],
         contrasena: json["contrasena"],
+        avatar: json["avatar"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         deletedAt: json["deletedAt"],
@@ -48,6 +51,7 @@ class UsuarioModel {
         "apellido": apellido,
         "correo": correo,
         "contrasena": contrasena,
+        "avatar": avatar,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
         "deletedAt": deletedAt,

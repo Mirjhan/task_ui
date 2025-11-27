@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:tasks/src/core/config.dart';
 import 'package:tasks/src/services/app_response.dart';
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:tasks/src/services/method_enum.dart';
 
 class AppHttpManager {
   Future<AppResponse> get({
@@ -69,18 +72,20 @@ class AppHttpManager {
     required String path,
     required String fieldNameOfFile,
     required String pathFile,
+    required MethodEnum method,
     Map<String, String>? headers,
     Map<String, String>? fields,
   }) async {
     // TODO: agregar headers.
     log('Request: SEND FILE');
     http.MultipartRequest request =
-        http.MultipartRequest("POST", Uri.parse('$urlServer$path'));
+        http.MultipartRequest(method.name, Uri.parse('$urlServer$path'));
 
     fields?.forEach((key, value) => request.fields[key] = value);
 
-    http.MultipartFile file =
-        await http.MultipartFile.fromPath(fieldNameOfFile, pathFile);
+    http.MultipartFile file = await http.MultipartFile.fromPath(
+        fieldNameOfFile, pathFile,
+        contentType: _getMimeType(pathFile));
 
     request.files.add(file);
 
@@ -119,6 +124,12 @@ class AppHttpManager {
     }
     log('URL: $url');
     return url;
+  }
+
+  MediaType _getMimeType(String filePath) {
+    final mime = lookupMimeType(filePath) ?? 'application/octet-stream';
+    final parts = mime.split('/');
+    return MediaType(parts[0], parts[1]);
   }
 
   AppResponse _returnResponse(http.Response response) {

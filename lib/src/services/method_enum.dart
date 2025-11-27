@@ -1,0 +1,4 @@
+enum MethodEnum {
+  post,
+  put,
+}

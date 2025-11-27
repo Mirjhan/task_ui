@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasks/src/core/config.dart';
 import 'package:tasks/src/ui/core/colors.dart';
 import 'package:tasks/src/ui/pages/usuario/usuario_controller.dart';
 import 'package:tasks/src/ui/widget/app_bar_widget.dart';
@@ -20,9 +21,10 @@ class UsuarioPage extends StatelessWidget {
                 separatorBuilder: (context, index) => Divider(),
                 itemCount: controller.usuarios.length,
                 itemBuilder: (context, index) => itemListTile(
-                    controller.usuarios[index].nombre,
-                    controller.usuarios[index].correo,
-                    index))),
+                    title: controller.usuarios[index].nombre,
+                    subtitle: controller.usuarios[index].correo,
+                    avatar: controller.usuarios[index].avatar,
+                    posicion: index))),
         floatingActionButton: FloatingActionButton(
           onPressed: controller.goToAddUsuarioPage,
           child: Icon(Icons.add),
@@ -31,10 +33,18 @@ class UsuarioPage extends StatelessWidget {
     );
   }
 
-  Widget itemListTile(String title, String subtitle, int posicion) {
+  Widget itemListTile({
+    required String title,
+    required String subtitle,
+    required int posicion,
+    String? avatar,
+  }) {
     return Container(
       padding: EdgeInsets.all(15),
       child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: _pickImage(avatar),
+          ),
           title: Text(
             title,
             style: TextStyle(
@@ -59,5 +69,11 @@ class UsuarioPage extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  ImageProvider _pickImage(String? avatar) {
+    return (avatar != null)
+        ? NetworkImage('$urlServer/users/$avatar')
+        : AssetImage('assets/images/notfound.png');
   }
 }
